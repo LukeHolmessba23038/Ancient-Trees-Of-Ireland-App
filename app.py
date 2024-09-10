@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
-
-
-pip install streamlit
-
-
 # In[18]:
 
 
