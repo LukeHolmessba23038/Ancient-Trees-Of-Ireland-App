@@ -1,1 +1,1 @@
-web: gunicorn ancienttreesofireland:server
+web: gunicorn AncientTreesPreRendered110920224:app
