@@ -6,10 +6,8 @@ import pandas as pd
 import plotly.express as px
 import dash
 from dash.dependencies import Input, Output
-from dash import dcc, html, Input, Output
-import re
-from pyproj import Transformer
-from flask import Flask, render_template
+from dash import dcc, html
+from flask import Flask
 
 # Initialize the Flask app
 server = Flask(__name__)
@@ -17,45 +15,8 @@ server = Flask(__name__)
 # Initialize the Dash app and associate it with the Flask app
 app = dash.Dash(__name__, server=server, url_base_pathname='/')
 
-# Load dataset
-df = pd.read_csv('HeritageTreesOfIreland.csv')
-
-# Preprocessing
-df['StartDate'] = pd.to_datetime(df['StartDate'], dayfirst=True, errors='coerce')
-df['EndDate'] = pd.to_datetime(df['EndDate'], dayfirst=True, errors='coerce')
-df['Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
-
-# Extract county from 'SiteName' after "Co."
-df['County'] = df['SiteName'].str.extract(r'Co\.\s*(\w+)')
-
-# Remove rows where 'County' is None or null
-df = df.dropna(subset=['County'])
-
-# Dictionary mappings for common names and tree types
-scientific_to_common = {
-    'Abies alba': 'European Silver Fir',
-    # (Other mappings...)
-}
-
-scientific_to_type = {
-    'Abies alba': 'Firs',
-    # (Other mappings...)
-}
-
-# Apply mappings
-df['CommonName'] = df['TaxonName'].map(scientific_to_common)
-df['BroadType'] = df['TaxonName'].map(scientific_to_type)
-
-# Fill missing values with the scientific name if no common name is found
-df['CommonName'].fillna(df['TaxonName'], inplace=True)
-df['BroadType'].fillna('Other', inplace=True)
-
-# Convert Irish Grid (EPSG:29903) coordinates to WGS84 (EPSG:4326)
-transformer = Transformer.from_crs("EPSG:29903", "EPSG:4326", always_xy=True)
-df['Longitude'], df['Latitude'] = transformer.transform(df['East'].values, df['North'].values)
-
-# Check conversion
-print(df[['East', 'North', 'Latitude', 'Longitude']].head())
+# Load preprocessed dataset
+df = pd.read_csv('HeritageTreesOfIreland_transformed_updated.csv')
 
 # Build Dash app layout
 app.layout = html.Div([
