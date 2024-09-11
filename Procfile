@@ -1,2 +1,2 @@
-web: gunicorn ancienttreesofireland:server
+web: gunicorn ancienttreesofireland:server --workers=3 --threads=4
 
