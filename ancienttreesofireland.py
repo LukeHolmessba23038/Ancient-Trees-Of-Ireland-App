@@ -8,6 +8,7 @@ import dash
 from dash.dependencies import Input, Output
 from dash import dcc, html
 from flask import Flask
+import os  
 
 # Initialize the Flask app
 server = Flask(__name__)
@@ -97,7 +98,8 @@ def update_map(selected_counties, selected_broad_types, selected_common_names, s
 def index():
     return "<h1>Welcome to the Interactive Trees of Ireland Dashboard!</h1>"
 
-# Running the app (for standalone use)
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8053)
+    port = int(os.environ.get('PORT', 8053))  # Use the port from the environment, default to 8053 if not available
+    app.run_server(debug=False, port=port, host='0.0.0.0')  # Bind to 0.0.0.0 to accept all connections
+
 
