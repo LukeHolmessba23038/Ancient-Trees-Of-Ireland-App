@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Download and extract PROJ source code
+PROJ_VERSION=8.0.1
+echo "-----> Installing PROJ $PROJ_VERSION from source"
+curl -LO https://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz
+tar -xzvf proj-$PROJ_VERSION.tar.gz
+cd proj-$PROJ_VERSION
+
+# Install PROJ dependencies
+echo "-----> Installing PROJ dependencies"
+sudo apt-get update
+sudo apt-get install -y sqlite3 libsqlite3-dev
+
+# Configure and compile PROJ
+echo "-----> Compiling and installing PROJ"
+./configure
+make
+sudo make install
+
+# Clean up
+echo "-----> Cleaning up"
+cd ..
+rm -rf proj-$PROJ_VERSION
+rm proj-$PROJ_VERSION.tar.gz
+
+echo "-----> PROJ installed"
