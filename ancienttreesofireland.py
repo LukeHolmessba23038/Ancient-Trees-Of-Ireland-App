@@ -101,5 +101,3 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8053))  # Use the port from the environment, default to 8053 if not available
     app.run_server(debug=False, port=port, host='0.0.0.0')  # Bind to 0.0.0.0 to accept all connections
-
-
