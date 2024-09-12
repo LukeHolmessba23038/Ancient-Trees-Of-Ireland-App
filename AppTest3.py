@@ -14,14 +14,6 @@ st.set_page_config(page_title="Ireland's Heritage Trees", layout="wide")
 # Create a sidebar for the filters
 st.sidebar.header("Filter the Trees")
 
-# Dropdown for County
-selected_county = st.sidebar.selectbox(
-    "Filter by County:",
-    options=['All'] + list(df['County'].unique()),
-    index=0,  # Set default to 'All'
-    help="Select the county to view trees from a specific region."
-)
-
 # Dropdown for Broad Type
 selected_broad_type = st.sidebar.selectbox(
     "Filter by Broad Type:",
@@ -49,9 +41,6 @@ selected_age_range = st.sidebar.selectbox(
 # Filter DataFrame based on selections
 filtered_df = df.copy()
 
-if selected_county != 'All':
-    filtered_df = filtered_df[filtered_df['County'] == selected_county]
-
 if selected_broad_type != 'All':
     filtered_df = filtered_df[filtered_df['BroadType'] == selected_broad_type]
 
@@ -65,7 +54,7 @@ if selected_age_range != 'All':
 st.title("🌳 Interactive Heritage Tree Map of Ireland")
 st.markdown("""
 This interactive map allows you to explore the ancient and significant trees of Ireland. 
-Use the filters on the left to narrow down your search by county, tree type, common name, and age range.
+Use the filters on the left to narrow down your search by tree type, common name, and age range.
 """)
 
 # Display a count of how many trees are shown
@@ -81,8 +70,7 @@ if filtered_df.shape[0] > 0:
             "BroadType": True,
             "Age Range": True,
             "Tree form": True,
-            "Condition of tree": True,
-            "County": True
+            "Condition of tree": True
         },
         mapbox_style="carto-positron",  # Light, modern map style
         zoom=7
