@@ -13,41 +13,53 @@ st.set_page_config(page_title="Ireland's Heritage Trees", layout="wide")
 
 # Create a sidebar for the filters
 st.sidebar.header("Filter the Trees")
-selected_counties = st.sidebar.multiselect(
+
+# Dropdown for County
+selected_county = st.sidebar.selectbox(
     "Filter by County:",
-    options=df['County'].unique(),
-    default=df['County'].unique(),
-    help="Select the counties to view trees from specific regions."
+    options=['All'] + list(df['County'].unique()),
+    index=0,  # Set default to 'All'
+    help="Select the county to view trees from a specific region."
 )
 
-selected_broad_types = st.sidebar.multiselect(
+# Dropdown for Broad Type
+selected_broad_type = st.sidebar.selectbox(
     "Filter by Broad Type:",
-    options=df['BroadType'].unique(),
-    default=df['BroadType'].unique(),
-    help="Choose the broad types of trees you are interested in."
+    options=['All'] + list(df['BroadType'].unique()),
+    index=0,
+    help="Choose the broad type of trees you are interested in."
 )
 
-selected_common_names = st.sidebar.multiselect(
+# Dropdown for Common Name
+selected_common_name = st.sidebar.selectbox(
     "Filter by Common Name:",
-    options=df['CommonName'].unique(),
-    default=df['CommonName'].unique(),
+    options=['All'] + list(df['CommonName'].unique()),
+    index=0,
     help="Pick the specific tree species by common names."
 )
 
-selected_age_ranges = st.sidebar.multiselect(
+# Dropdown for Age Range
+selected_age_range = st.sidebar.selectbox(
     "Filter by Age Range:",
-    options=df['Age Range'].unique(),
-    default=df['Age Range'].unique(),
+    options=['All'] + list(df['Age Range'].unique()),
+    index=0,
     help="Filter trees based on their age range."
 )
 
 # Filter DataFrame based on selections
-filtered_df = df[
-    (df['County'].isin(selected_counties)) &
-    (df['BroadType'].isin(selected_broad_types)) &
-    (df['CommonName'].isin(selected_common_names)) &
-    (df['Age Range'].isin(selected_age_ranges))
-]
+filtered_df = df.copy()
+
+if selected_county != 'All':
+    filtered_df = filtered_df[filtered_df['County'] == selected_county]
+
+if selected_broad_type != 'All':
+    filtered_df = filtered_df[filtered_df['BroadType'] == selected_broad_type]
+
+if selected_common_name != 'All':
+    filtered_df = filtered_df[filtered_df['CommonName'] == selected_common_name]
+
+if selected_age_range != 'All':
+    filtered_df = filtered_df[filtered_df['Age Range'] == selected_age_range]
 
 # Main title and description
 st.title("🌳 Interactive Heritage Tree Map of Ireland")
@@ -90,5 +102,4 @@ else:
 
 # Footer information
 st.sidebar.markdown("---")
-st.sidebar.write("🌍 Developed by [Your Name](https://yourportfolio.com)")
-
+st.sidebar.write("🌍 Developed by Luke Holmes")
