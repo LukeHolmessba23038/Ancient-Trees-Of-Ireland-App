@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Load preprocessed dataset with latitude and longitude from GitHub (raw link)
-df = pd.read_csv('https://raw.githubusercontent.com/LukeHolmessba23038/Ancient-Trees-Of-Ireland-App/main/HeritageTreesOfIreland_with_latlon_updated.csv')
+# Load the corrected dataset with latitude and longitude from GitHub (raw link)
+df = pd.read_csv('https://raw.githubusercontent.com/LukeHolmessba23038/Ancient-Trees-Of-Ireland-App/main/HeritageTreesOfIreland_corrected.csv')
 
 # Remove rows with missing lat/lon before mapping
 df = df.dropna(subset=['Latitude', 'Longitude'])
