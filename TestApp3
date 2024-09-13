@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from shapely.geometry import Point, Polygon
 
 # Load dataset from GitHub
 df = pd.read_csv('https://raw.githubusercontent.com/LukeHolmessba23038/Ancient-Trees-Of-Ireland-App/main/HeritageTreesOfIreland_corrected.csv')
@@ -9,18 +8,9 @@ df = pd.read_csv('https://raw.githubusercontent.com/LukeHolmessba23038/Ancient-T
 # Remove rows with missing lat/lon before mapping
 df = df.dropna(subset=['Latitude', 'Longitude'])
 
-# Define the polygon boundary of Ireland (an approximate boundary)
-ireland_polygon = Polygon([
-    (-10.5, 51.4), (-10.5, 55.5), (-5.5, 55.5), (-5.5, 51.4), (-10.5, 51.4)
-])
-
-# Function to check if a point is within Ireland's landmass
-def is_point_in_ireland(lat, lon):
-    point = Point(lon, lat)
-    return ireland_polygon.contains(point)
-
-# Apply the function to filter out points outside Ireland
-df = df[df.apply(lambda row: is_point_in_ireland(row['Latitude'], row['Longitude']), axis=1)]
+# Apply stricter geographical bounds for Ireland (Latitude: 51.4 to 55.4, Longitude: -10.5 to -5.5)
+df = df[(df['Latitude'] >= 51.4) & (df['Latitude'] <= 55.4) & 
+        (df['Longitude'] >= -10.5) & (df['Longitude'] <= -5.5)]
 
 # Set page config for better presentation
 st.set_page_config(page_title="Ireland's Heritage Trees", layout="wide")
