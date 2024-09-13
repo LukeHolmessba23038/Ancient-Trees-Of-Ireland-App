@@ -8,6 +8,10 @@ df = pd.read_csv('https://raw.githubusercontent.com/LukeHolmessba23038/Ancient-T
 # Remove rows with missing lat/lon before mapping
 df = df.dropna(subset=['Latitude', 'Longitude'])
 
+# Filter out trees with coordinates outside Ireland's geographical boundaries
+# Approximate bounds: Latitude between 51.4 and 55.5, Longitude between -10.5 and -5.5
+df = df[(df['Latitude'] >= 51.4) & (df['Latitude'] <= 55.5) & (df['Longitude'] >= -10.5) & (df['Longitude'] <= -5.5)]
+
 # Set page config for better presentation
 st.set_page_config(page_title="Ireland's Heritage Trees", layout="wide")
 
